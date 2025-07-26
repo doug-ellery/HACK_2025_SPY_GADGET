@@ -20,6 +20,6 @@ def measure_distance():
     end = utime.ticks_us()  # Record end time
 
     duration = utime.ticks_diff(end, start)
-    distance = (duration * 0.0343) / 2  # Calculate distance in cm (Speed of sound is 343 m/s)
+    distance = (duration * 0.0343) / 2 + 0.45172 # Calculate distance in cm (Speed of sound is 343 m/s)
 
     return distance
