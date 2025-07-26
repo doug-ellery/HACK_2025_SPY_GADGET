@@ -19,16 +19,12 @@ def load_env(filepath=".env"):
     return env_vars
 
 
-
 def main():
     try: 
         env = load_env()
         connect_internet(env.get("WIFI_NAME"),password = env.get("WIFI_PASS")) #ssid (wifi name), pass
         client = connect_mqtt(env.get("CONNECT_URL"), env.get("MQTT_USER"), env.get("MQTT_PASS")) # url, user, pass
-        client.subscribe("temp request")
-        client.subscribe("humidity request")
-        client.subscribe("light request")
-        client.subscribe("distance request")
+
         def cb(topic,message):
             if(topic == "temp request"):
                 client.publish("temp",temperature.getTemp())
@@ -39,6 +35,12 @@ def main():
             elif(topic == "distance request"):
                 client.publish("distance", distance.getDistance())
         client.set_callback(cb)
+        client.subscribe("text")
+        
+        client.subscribe("temp request")
+        client.subscribe("humidity request")
+        client.subscribe("light request")
+        client.subscribe("distance request")
         while True:
             client.check_msg()
             sleep(0.1)
@@ -49,6 +51,7 @@ def main():
         
 if __name__ == "__main__":
     main()
+
 
 
 
