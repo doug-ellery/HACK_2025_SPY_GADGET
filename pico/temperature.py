@@ -1,9 +1,12 @@
+import dht 
+import time 
 import machine
-import dht
-import time
 
-temp_pin = machine.Pin(2)
-temp_sensor = dht.DHT22(temp_pin)
+# Initialize DHT11 sensor on GPIO 16
+d = dht.DHT11(machine.Pin(16))
 
+# Continuously read and print temperature and humidity
 def getTemp():
-    return temp_sensor.temperature()
+    d.measure()  # Trigger measurement
+    farenheittemp = d.temperature() * 9 / 5 + 32 - 3  # Convert to Fahrenheit (Minus 6 from calibration)
+    return farenheittemp  # Print temperature

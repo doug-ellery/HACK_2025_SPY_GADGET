@@ -1,9 +1,12 @@
+import dht 
+import time 
 import machine
-import dht
-import time
 
-humidity_pin = machine.Pin(2)
-humidity_sensor = dht.DHT22(humidity_pin)
+# Initialize DHT11 sensor on GPIO 16
+d = dht.DHT11(machine.Pin(16))
 
+# Continuously read and print temperature and humidity
 def getHumidity():
-    return humidity_sensor.humidity()
+    d.measure()  # Trigger measurement
+    calibratedHumid = d.humidity() + 11
+    return calibratedHumid

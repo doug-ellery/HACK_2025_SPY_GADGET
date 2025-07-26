@@ -50,7 +50,7 @@ client.on("reconnect", function () {
 // MQTT Connection
 
 client.on('connect', async () => {
-  console.log("Connected");
+  console.log("MQTT Connected");
 
   client.subscribe("ultrasonic", (err) => {
     if (err) {

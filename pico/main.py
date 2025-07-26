@@ -5,26 +5,40 @@ import humidity
 import light
 import distance
 
-def main():
+def load_env(filepath=".env"):
+    env_vars = {}
     try:
-        with open('creds.txt', 'r') as file:
-            ID = file.read()
-            myPass = file.read()
-        connect_internet(ID,password = myPass) #ssid (wifi name), pass
-        client = connect_mqtt("c43e5a2a499a43779f30850aeb202a3f.s1.eu.hivemq.cloud", "doug_ellery", "HaCK_2025") # url, user, pass
+        with open(filepath, "r") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#"):
+                    key, value = line.split("=", 1)
+                    env_vars[key.strip()] = value.strip()
+    except Exception as e:
+        print("Error loading .env file:", e)
+    return env_vars
+
+
+
+def main():
+    try: 
+        env = load_env()
+        connect_internet(env.get("WIFI_NAME"),password = env.get("WIFI_PASS")) #ssid (wifi name), pass
+        client = connect_mqtt(env.get("CONNECT_URL"), env.get("MQTT_USER"), env.get("MQTT_PASS")) # url, user, pass
         client.subscribe("temp request")
         client.subscribe("humidity request")
         client.subscribe("light request")
         client.subscribe("distance request")
-        def cb(topic, message):
+        def cb(topic,message):
             if(topic == "temp request"):
                 client.publish("temp",temperature.getTemp())
             elif(topic == "humidity request"):
                 client.publish("humidity",humidity.getHumidity())
-            elif(topic == "light request", light.getLight()):
+            elif(topic == "light request"):
                 client.publish("light", light.getLight)
             elif(topic == "distance request"):
                 client.publish("distance", distance.getDistance())
+        client.set_callback(cb)
         while True:
             client.check_msg()
             sleep(0.1)
