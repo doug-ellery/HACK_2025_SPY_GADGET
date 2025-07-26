@@ -22,13 +22,8 @@ def load_env(filepath=".env"):
 def main():
     try: 
         env = load_env()
-<<<<<<< HEAD
-        connect_internet(str(env.get("WIFI_NAME")),password = str(env.get("WIFI_PASS"))) #ssid (wifi name), pass
-        client = connect_mqtt("c43e5a2a499a43779f30850aeb202a3f.s1.eu.hivemq.cloud", str(env.get("MQTT_USER")), str(env.get("MQTT_PASS"))) # url, user, pass
-=======
         connect_internet(env.get("WIFI_NAME"),password = env.get("WIFI_PASS")) #ssid (wifi name), pass
         client = connect_mqtt("c43e5a2a499a43779f30850aeb202a3f.s1.eu.hivemq.cloud", env.get("MQTT_USER"), env.get("MQTT_PASS")) # url, user, pass
->>>>>>> c8ce9fd (fixed url)
 
         def cb(topic,message):
             if(topic == "temp request"):
@@ -41,10 +36,7 @@ def main():
                 client.publish("distance", distance.getDistance())
         client.set_callback(cb)
         client.subscribe("text")
-<<<<<<< HEAD
-=======
         
->>>>>>> c8ce9fd (fixed url)
         client.subscribe("temp request")
         client.subscribe("humidity request")
         client.subscribe("light request")
@@ -58,12 +50,4 @@ def main():
         
         
 if __name__ == "__main__":
-<<<<<<< HEAD
     main()
-
-
-
-
-=======
-    main()
->>>>>>> c8ce9fd (fixed url)
