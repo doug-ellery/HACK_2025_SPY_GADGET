@@ -47,6 +47,21 @@ client.on("reconnect", function () {
   console.log("Attempting to reconnect...");
 });
 
+client.on('message', (TOPIC, payload) => {
+  console.log("Received from broker:", TOPIC, payload.toString());
+  if( TOPIC === 'temp' ) {
+    latestTemp = payload.toString();
+  }
+  else if ( TOPIC === 'ultrasonic' ) {
+    latestUltrasonic = payload.toString();
+  }
+  else if ( TOPIC === 'humidity') {
+    latestHumidity = payload.toString();
+  }
+  else if ( TOPIC === 'light') {
+    latestLight = payload.toString();
+  }
+});
 // MQTT Connection
 
 client.on('connect', async () => {
@@ -91,28 +106,13 @@ client.on('connect', async () => {
       console.log("Subscribed to 'light'");
     }
   });
+
+
+
 });
 
 //when we recieve any of the important data from the MQTT, we should publish it back to the front end
-client.on("ultrasonic", ultrasonic => {
-  io.emit('distance', ultrasonic);
-});
 
-client.on("temp", temp => {
-  io.emit('temp', temp);
-});
-
-client.on("humidity", humidity => {
-  io.emit('humidity', humidity);
-});
-
-client.on("light", light => {
-  io.emit('light', light);
-});
-
-client.on("photo description", photoDescription => {
-  io.emit('picture taken', photoDescription);
-});
 
 
 const corsOptions = {
@@ -148,7 +148,7 @@ io.on("connection", (socket) => {
   });
 
   //Handle any temp, humidity, light, and distance requests, by sending them on to the python
-
+/*
   socket.on('temp request',()=>{
     client.publish('temp request');
   });
@@ -160,7 +160,7 @@ io.on("connection", (socket) => {
   });
   socket.on('distance request',()=>{
     client.publish('distance request');
-  });
+  });*/
 
   // Handle take picture request
   socket.on('take_picture', () => {
@@ -194,31 +194,23 @@ io.on("connection", (socket) => {
   });
 
 });
-/*
+
 setInterval(() => {
+  client.publish('temp request');
+  console.log("requesting temp");
+  client.publish('humidity request');
+  client.publish('light request');
+  client.publish('distance request');
   io.emit('temp', latestTemp);
   io.emit('ultrasonic', latestUltrasonic);
-  io.emit('humidity', 99);
-  io.emit('light', latestLight)
-}, 1000);*/
+  io.emit('humidity', latestHumidity);
+  io.emit('light', latestLight);
+  
+}, 2000);
 
 server.listen(8000, () => {
   console.log('Server is running on port 8000');
 });
 
-client.on('message', (TOPIC, payload) => {
-  console.log("Received from broker:", TOPIC, payload.toString());
-  if( TOPIC === 'temp' ) {
-    latestTemp = payload.toString();
-  }
-  else if ( TOPIC === 'ultrasonic' ) {
-    latestUltrasonic = payload.toString();
-  }
-  else if ( TOPIC === 'humidity') {
-    latestHumidity = payload.toString();
-  }
-  else if ( TOPIC === 'light') {
-    latestLight = payload.toString();
-  }
-});
+
 

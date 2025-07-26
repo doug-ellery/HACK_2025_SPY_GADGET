@@ -26,14 +26,16 @@ def main():
         client = connect_mqtt("c43e5a2a499a43779f30850aeb202a3f.s1.eu.hivemq.cloud", env.get("MQTT_USER"), env.get("MQTT_PASS")) # url, user, pass
 
         def cb(topic,message):
-            if(topic == "temp request"):
-                client.publish("temp",temperature.getTemp())
-            elif(topic == "humidity request"):
-                client.publish("humidity",humidity.getHumidity())
-            elif(topic == "light request"):
-                client.publish("light", light.getLight)
-            elif(topic == "distance request"):
-                client.publish("distance", distance.getDistance())
+            print("topic:" + str(topic))
+            if(topic == b"temp request"):
+                print("recieved temp request")
+                client.publish("temp",str(temperature.getTemp()))
+            elif(topic == b"humidity request"):
+                client.publish("humidity",str(humidity.getHumidity()))
+            elif(topic == b"light request"):
+                client.publish("light", str(light.getLight()))
+            elif(topic == b"distance request"):
+                client.publish("ultrasonic", str(distance.measure_distance()))
         client.set_callback(cb)
         client.subscribe("text")
         

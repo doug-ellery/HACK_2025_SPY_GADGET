@@ -6,10 +6,10 @@ const socket = io('http://localhost:8000');
 
 function App() {
   const [pictureStatus, setPictureStatus] = useState("");
-  const [currTemp, setCurrTemp] = useState(0);
-  const [currHumidity, setCurrHumidity] = useState(0);
-  const [currLumens, setCurrLumens] = useState(0);
-  const [currDistance, setCurrDistance] = useState(0);
+  const [currTemp, setCurrTemp] = useState("");
+  const [currHumidity, setCurrHumidity] = useState("");
+  const [currLumens, setCurrLumens] = useState("");
+  const [currDistance, setCurrDistance] = useState("");
   const [picDescription, setPicDescription] = useState("");
 
 
@@ -22,34 +22,24 @@ function App() {
       setPictureStatus(data.message);
       setTimeout(() => setPictureStatus(""), 3000); // Clear status after 3 seconds
     });
+    socket.on('temp', temp => {setCurrTemp(temp)});
+    socket.on('humidity', humidity => {setCurrHumidity(humidity)});
+    socket.on('light', light => {setCurrLumens(light)});
+    socket.on('ultrasonic', distance => {setCurrDistance(distance)});
+
     return () => {
       socket.off('picture_taken');
+      socket.off('temp');
+      socket.off('humidity');
+      socket.off('light');
+      socket.off('ultrasonic');
     };
   }, []);
 
   function takePhoto(){
     socket.emit('picture request');
     socket.on('picture taken',description => {setPicDescription(description)});
-  }
-
-  function getTemp(){
-    socket.emit('temp request')
-    socket.on('temp', temp => {setCurrTemp(temp) });
-  }
-
-  function getHumidity(){
-    socket.emit('humidity request');
-    socket.on('humidity', humidity => {setCurrHumidity(humidity)});
-  }
-
-  function getLight(){
-    socket.emit('light request');
-    socket.on('light', light => {setCurrLumens(light)});
-  }
-
-  function getDistance(){
-    socket.emit('distance request');
-    socket.on('distance', distance => {setCurrDistance(distance)});
+    
   }
 
   return (
@@ -68,25 +58,21 @@ function App() {
       <br></br>
       <br></br>
       <br></br>
-      <button onClick = {getTemp}>Click to Get the Temperature</button>
       <br></br>
       <h>Temperature: {currTemp}</h>
       <br></br>
       <br></br>
       <br></br>
-      <button onClick = {getHumidity}>Click to Get the Humidity</button>
       <br></br>
       <h>Humidity: {currHumidity}</h>
       <br></br>
       <br></br>
       <br></br>
-      <button onClick = {getLight}>Click to Get the Light</button>
       <br></br>
       <h>Light: {currLumens}</h>
       <br></br>
       <br></br>
       <br></br>
-      <button onClick = {getDistance}>Click to Get the Distance</button>
       <br></br>
       <h>Distance: {currDistance}</h>
     </div>
