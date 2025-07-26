@@ -95,23 +95,23 @@ client.on('connect', async () => {
 
 //when we recieve any of the important data from the MQTT, we should publish it back to the front end
 client.on("ultrasonic", ultrasonic => {
-  socket.emit('distance', ultrasonic);
+  io.emit('distance', ultrasonic);
 });
 
 client.on("temp", temp => {
-  socket.emit('temp', temp);
+  io.emit('temp', temp);
 });
 
 client.on("humidity", humidity => {
-  socket.emit('humidity', humidity);
+  io.emit('humidity', humidity);
 });
 
 client.on("light", light => {
-  socket.emit('light', light);
+  io.emit('light', light);
 });
 
 client.on("photo description", photoDescription => {
-  socket.emit('picture taken', photoDescription);
+  io.emit('picture taken', photoDescription);
 });
 
 
@@ -194,13 +194,13 @@ io.on("connection", (socket) => {
   });
 
 });
-
+/*
 setInterval(() => {
   io.emit('temp', latestTemp);
   io.emit('ultrasonic', latestUltrasonic);
   io.emit('humidity', 99);
   io.emit('light', latestLight)
-}, 1000);
+}, 1000);*/
 
 server.listen(8000, () => {
   console.log('Server is running on port 8000');
