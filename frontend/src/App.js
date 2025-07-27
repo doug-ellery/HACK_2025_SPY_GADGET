@@ -11,6 +11,7 @@ function App() {
   const [currLumens, setCurrLumens] = useState("");
   const [currDistance, setCurrDistance] = useState("");
   const [picDescription, setPicDescription] = useState("");
+  const [displayMessage, setDisplayMessage] = useState("");
 
 
 
@@ -45,6 +46,10 @@ function App() {
     const audio = new Audio('/description.wav?ts=${Date.now()}');
     audio.play();
   }
+  function handleMessage(message){
+    setDisplayMessage(message);
+    socket.emit('display request', displayMessage);
+  }
 
   return (
     <div className="App">
@@ -52,6 +57,17 @@ function App() {
       <button onClick={takePhoto}>Click to Take a Photo</button>
       <h2>Description: {picDescription}</h2>
       <button onClick={playAudio}>Audio Description</button>
+       <div style={{ padding: '1rem' }}>
+        <textarea
+          placeholder="Type something here..."
+          value={displayMessage}
+          onChange={(e) => setDisplayMessage(e.target.value)}
+          rows={4}
+          cols={50}
+          style={{ marginBottom: '1rem' }}
+        />
+        <button onClick = {handleMessage}>Submit</button>
+        </div>
     
       {/* Floating Info Boxes */}
       <div

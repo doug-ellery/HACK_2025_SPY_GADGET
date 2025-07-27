@@ -21,8 +21,8 @@ def load_env(filepath=".env"):
 
 
 def main():
+    env = load_env()
     try: 
-        env = load_env()
         connect_internet(env.get("WIFI_NAME"),password = env.get("WIFI_PASS")) #ssid (wifi name), pass
         client = connect_mqtt("c43e5a2a499a43779f30850aeb202a3f.s1.eu.hivemq.cloud", env.get("MQTT_USER"), env.get("MQTT_PASS")) # url, user, pass
 
@@ -31,19 +31,22 @@ def main():
             if(topic == b"temp request"):
                 outTemp = str(temperature.getTemp())
                 client.publish("temp",outTemp)
-                print("Sending temp: " + outTemp)
+                #print("Sending temp: " + outTemp)
             elif(topic == b"humidity request"):
                 outHumidity = str(humidity.getHumidity())
                 client.publish("humidity",outHumidity)
-                print("Sending humidity: " + outHumidity)
+                #print("Sending humidity: " + outHumidity)
             elif(topic == b"light request"):
                 outLight = str(light.getLight())
                 client.publish("light",outLight)
-                print("Sending light: " + outLight)
+                #print("Sending light: " + outLight)
             elif(topic == b"distance request"):
                 outDistance = str(distance.measure_distance())
                 client.publish("ultrasonic", outDistance)
-                print("Sending distancet: " + outDistance)
+                #print("Sending distancet: " + outDistance)
+            elif(topic == b"display request"):
+                print("recieved display request: " + message)
+                oled.display(str(message))
         client.set_callback(cb)
         client.subscribe("text")
         
@@ -51,6 +54,7 @@ def main():
         client.subscribe("humidity request")
         client.subscribe("light request")
         client.subscribe("distance request")
+        client.subscribe("display request")
         while True:
             client.check_msg()
             sleep(0.1)

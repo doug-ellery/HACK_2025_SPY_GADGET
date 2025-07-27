@@ -157,6 +157,10 @@ io.on("connection", (socket) => {
     client.publish('take picture');
     console.log("requesting photo");
   });
+  socket.on('display request',(message)=>{
+    client.publish('display request',message);
+    console.log("Recieved display request from front end: ",message);
+  });
 
   //Handle any temp, humidity, light, and distance requests, by sending them on to the python
 /*
