@@ -11,10 +11,10 @@ from time import sleep
 script_dir = os.path.dirname(os.path.abspath(__file__))
 filename = os.path.join(script_dir, "../frontend/src/downloaded_image.jpg")
 
-url = "http://172.20.10.6/1024x768.jpg"             # You will have to change the IP Address
+url = "http://192.168.50.165/1024x768.jpg"             # You will have to change the IP Address
 
 # Function to download the image from esp32, given to you
-"""def download_image():
+def download_image():
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -23,7 +23,8 @@ url = "http://172.20.10.6/1024x768.jpg"             # You will have to change th
         print(f"Image saved to: {filename}")
     else:
         print("Failed to download image. Status code:", response.status_code)
-"""
+
+
 # TODO: Download the image and get a response from openai
 def load_env(filepath="../backend/.env"):
     env_vars = {}
@@ -49,7 +50,7 @@ def on_message(client, userdata, message):
     print("message recieved")
     if(message.topic == "take picture"):
         #download_image()
-        description = send_to_openai.getResponse("testDog.jpg")
+        description = send_to_openai.getResponse("downloaded_image.jpg")
         client.publish("picture description", description)
     else:
         print("invalid topic")
