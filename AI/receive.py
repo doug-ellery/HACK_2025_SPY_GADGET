@@ -6,6 +6,7 @@ import os
 import sys
 import send_to_openai
 from time import sleep
+import description_to_audio
 
 # Get the folder where the script is located, done for you
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -15,13 +16,18 @@ url = "http://192.168.50.165/1024x768.jpg"             # You will have to change
 
 # Function to download the image from esp32, given to you
 def download_image():
-    response = requests.get(url, timeout = 2)
-    if response.status_code == 200:
-        with open(filename, "wb") as f:
-            f.write(response.content)
-        print(f"Image saved to: {filename}")
-    else:
-        print("Failed to download image. Status code:", response.status_code)
+    try:
+        response = requests.get(url, timeout = 2)
+        if response.status_code == 200:
+            with open(filename, "wb") as f:
+                f.write(response.content)
+            print(f"Image saved to: {filename}")
+        else:
+            print("Failed to download image. Status code:", response.status_code)
+    
+    except Exception as e:
+        print("Failed due to exception: ",e)
+    
 
 
 # TODO: Download the image and get a response from openai
@@ -51,6 +57,7 @@ def on_message(client, userdata, message):
         download_image()
         description = send_to_openai.getResponse("downloaded_image.jpg")
         client.publish("picture description", description)
+        description_to_audio.text_to_audio(description)
     else:
         print("invalid topic")
 

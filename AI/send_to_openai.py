@@ -38,9 +38,5 @@ def getResponse(image_path):
 
 
 
-# TODO: How do we make things audible?
-    
 
-
-# TODO: Can we put everything together?
 

@@ -41,6 +41,11 @@ function App() {
     socket.emit('take picture');
   }
 
+  function playAudio(){
+    const audio = new Audio('/description.wav?ts=${Date.now()}');
+    audio.play();
+  }
+
   return (
     <div className="App">
       <br></br>
@@ -57,6 +62,7 @@ function App() {
       <br></br>
       <br></br>
       <br></br>
+      <button onClick = {playAudio}>Click to hear audio translation of the picture description</button>
       <br></br>
       <h>Temperature: {currTemp}</h>
       <br></br>
