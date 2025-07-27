@@ -15,8 +15,7 @@ url = "http://192.168.50.165/1024x768.jpg"             # You will have to change
 
 # Function to download the image from esp32, given to you
 def download_image():
-    response = requests.get(url)
-
+    response = requests.get(url, timeout = 2)
     if response.status_code == 200:
         with open(filename, "wb") as f:
             f.write(response.content)
