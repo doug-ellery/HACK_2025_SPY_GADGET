@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import io from 'socket.io-client';
 import './App.css';
-import downloaded_image from './downloaded_image'
+import downloaded_image from './downloaded_image.jpg'
 
 const socket = io('http://localhost:8000');
 
