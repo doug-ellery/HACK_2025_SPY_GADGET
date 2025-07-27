@@ -49,7 +49,7 @@ client.username_pw_set(env.get("MQTT_USER"), env.get("MQTT_PASS"))
 def on_message(client, userdata, message):
     print("message recieved")
     if(message.topic == "take picture"):
-        #download_image()
+        download_image()
         description = send_to_openai.getResponse("downloaded_image.jpg")
         client.publish("picture description", description)
     else:
