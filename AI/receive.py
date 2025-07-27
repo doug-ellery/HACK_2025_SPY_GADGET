@@ -12,7 +12,7 @@ import description_to_audio
 script_dir = os.path.dirname(os.path.abspath(__file__))
 filename = os.path.join(script_dir, "../frontend/src/downloaded_image.jpg")
 
-url = "http://192.168.50.165/1024x768.jpg"             # You will have to change the IP Address
+url = "http://192.168.0.105/1024x768.jpg"             # You will have to change the IP Address
 
 # Function to download the image from esp32, given to you
 def download_image():

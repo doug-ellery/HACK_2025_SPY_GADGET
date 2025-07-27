@@ -48,40 +48,41 @@ function App() {
 
   return (
     <div className="App">
-      <br></br>
-      <br></br>
-      <br></br>
-      <h className = "App-title">Welcome to the Operator's Control Panel</h>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <button onClick = {takePhoto}>Click to Take a Photo</button>
-      <br></br>
-      <h>Description: {picDescription}</h>
-      <br></br>
-      <br></br>
-      <br></br>
-      <button onClick = {playAudio}>Click to hear audio translation of the picture description</button>
-      <br></br>
-      <h>Temperature: {currTemp}</h>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <h>Humidity: {currHumidity}</h>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <h>Light: {currLumens}</h>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <h>Distance: {currDistance}</h>
+      <h1 className="App-title">Welcome to the Operator's Control Panel</h1>
+      <button onClick={takePhoto}>Click to Take a Photo</button>
+      <h2>Description: {picDescription}</h2>
+      <button onClick={playAudio}>Audio Description</button>
+    
+      {/* Floating Info Boxes */}
+      <div
+        className="info-box"
+        style={{ top: "100px", left: "50px" }}
+      >
+         Temperature: {currTemp}
+      </div>
+
+      <div
+        className="info-box"
+        style={{ top: "100px", right: "50px" }}
+      >
+         Light: {currLumens}
+      </div>
+
+      <div
+        className="info-box"
+        style={{ bottom: "100px", left: "50px" }}
+      >
+        Humidity: {currHumidity}
+      </div>
+
+      <div
+        className="info-box"
+        style={{ bottom: "100px", right: "50px" }}
+      >
+         Distance: {currDistance}
+      </div>
     </div>
-  );
+    );
 }
 
 export default App;
