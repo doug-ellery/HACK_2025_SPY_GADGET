@@ -27,7 +27,8 @@ def main():
         client = connect_mqtt("c43e5a2a499a43779f30850aeb202a3f.s1.eu.hivemq.cloud", env.get("MQTT_USER"), env.get("MQTT_PASS")) # url, user, pass
 
         def cb(topic,message):
-            print("topic:" + str(topic))
+            message = message.decode()
+            print("topic:" + str(topic) + "Message: " + str(message))
             if(topic == b"temp request"):
                 outTemp = str(temperature.getTemp())
                 client.publish("temp",outTemp)
@@ -46,7 +47,7 @@ def main():
                 #print("Sending distancet: " + outDistance)
             elif(topic == b"display request"):
                 print("recieved display request: " + message)
-                oled.display(str(message))
+                oled.display(message)
         client.set_callback(cb)
         client.subscribe("text")
         
