@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import io from 'socket.io-client';
 import './App.css';
+import downloaded_image from './downloaded_image'
 
 const socket = io('http://localhost:8000');
 
@@ -54,6 +55,7 @@ function App() {
   return (
     <div className="App">
       <h1 className="App-title">Welcome to the Operator's Control Panel</h1>
+      <img src={downloaded_image} alt="My Logo" style={{ width: '200px' }} />
       <button onClick={takePhoto}>Click to Take a Photo</button>
       <h2>Description: {picDescription}</h2>
       <button onClick={playAudio}>Audio Description</button>
