@@ -26,6 +26,7 @@ function App() {
     socket.on('humidity', humidity => {setCurrHumidity(humidity)});
     socket.on('light', light => {setCurrLumens(light)});
     socket.on('ultrasonic', distance => {setCurrDistance(distance)});
+    socket.on('picture description',description => {setPicDescription(description)});
 
     return () => {
       socket.off('picture_taken');
@@ -37,9 +38,7 @@ function App() {
   }, []);
 
   function takePhoto(){
-    socket.emit('picture request');
-    socket.on('picture taken',description => {setPicDescription(description)});
-    
+    socket.emit('take picture');
   }
 
   return (
@@ -52,7 +51,7 @@ function App() {
       <br></br>
       <br></br>
       <br></br>
-      <button /*onClick = {takePhoto}*/>Click to Take a Photo</button>
+      <button onClick = {takePhoto}>Click to Take a Photo</button>
       <br></br>
       <h>Description: {picDescription}</h>
       <br></br>

@@ -61,6 +61,11 @@ client.on('message', (TOPIC, payload) => {
   else if ( TOPIC === 'light') {
     latestLight = payload.toString();
   }
+  else if ( TOPIC === 'picture description') {
+    latestPictureDescription = payload.toString();
+    
+  }
+  
 });
 // MQTT Connection
 
@@ -99,11 +104,11 @@ client.on('connect', async () => {
     }
   });
 
-  client.subscribe("photo description", (err) => {
+  client.subscribe("picture description", (err) => {
     if (err) {
-      console.error("Subscription error for 'light': ", err);
+      console.error("Subscription error for 'picture description': ", err);
     } else {
-      console.log("Subscribed to 'light'");
+      console.log("Subscribed to 'picture description'");
     }
   });
 
@@ -127,6 +132,7 @@ let latestTemp = null;
 let latestUltrasonic = null;
 let latestHumidity = null;
 let latestLight = null;
+let latestPictureDescription = null;
 
 io.on("connection", (socket) => {
   console.log("Frontend connected to socket");
@@ -147,6 +153,11 @@ io.on("connection", (socket) => {
     client.publish("display", message.toString());
   });
 
+  socket.on('take picture',() =>{
+    client.publish('take picture');
+    console.log("requesting photo");
+  });
+
   //Handle any temp, humidity, light, and distance requests, by sending them on to the python
 /*
   socket.on('temp request',()=>{
@@ -163,7 +174,7 @@ io.on("connection", (socket) => {
   });*/
 
   // Handle take picture request
-  socket.on('take_picture', () => {
+  /*socket.on('take_picture', () => {
     console.log('📸 Taking picture and getting AI description...');
     
     // Execute the Python script
@@ -188,19 +199,21 @@ io.on("connection", (socket) => {
       }
     });
   });
-
+*/
   socket.on("disconnect", () => {
     console.log("Frontend disconnected from socket");
   });
 
 });
 
+
+
 setInterval(() => {
   client.publish('temp request');
-  console.log("requesting temp");
   client.publish('humidity request');
   client.publish('light request');
   client.publish('distance request');
+  io.emit('picture description',latestPictureDescription)
   io.emit('temp', latestTemp);
   io.emit('ultrasonic', latestUltrasonic);
   io.emit('humidity', latestHumidity);

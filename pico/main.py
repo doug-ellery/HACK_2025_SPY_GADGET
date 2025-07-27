@@ -4,6 +4,7 @@ import temperature
 import humidity
 import light
 import distance
+import oled
 
 def load_env(filepath=".env"):
     env_vars = {}
@@ -28,14 +29,21 @@ def main():
         def cb(topic,message):
             print("topic:" + str(topic))
             if(topic == b"temp request"):
-                print("recieved temp request")
-                client.publish("temp",str(temperature.getTemp()))
+                outTemp = str(temperature.getTemp())
+                client.publish("temp",outTemp)
+                print("Sending temp: " + outTemp)
             elif(topic == b"humidity request"):
-                client.publish("humidity",str(humidity.getHumidity()))
+                outHumidity = str(humidity.getHumidity())
+                client.publish("humidity",outHumidity)
+                print("Sending humidity: " + outHumidity)
             elif(topic == b"light request"):
-                client.publish("light", str(light.getLight()))
+                outLight = str(light.getLight())
+                client.publish("light",outLight)
+                print("Sending light: " + outLight)
             elif(topic == b"distance request"):
-                client.publish("ultrasonic", str(distance.measure_distance()))
+                outDistance = str(distance.measure_distance())
+                client.publish("ultrasonic", outDistance)
+                print("Sending distancet: " + outDistance)
         client.set_callback(cb)
         client.subscribe("text")
         
