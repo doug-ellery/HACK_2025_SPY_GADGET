@@ -10,7 +10,7 @@ import description_to_audio
 
 # Get the folder where the script is located, done for you
 script_dir = os.path.dirname(os.path.abspath(__file__))
-filename = os.path.join(script_dir, "../frontend/src/downloaded_image.jpg")
+filename = os.path.join(script_dir, "../AI/downloaded_image.jpg")
 
 url = "http://192.168.0.105/1024x768.jpg"             # You will have to change the IP Address
 
